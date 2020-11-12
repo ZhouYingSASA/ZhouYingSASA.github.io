@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="官方 Windows Preinstallation Environment (WinPE) 安装"><meta name="keywords" content="工具文"><meta name="author" content="ZhouYingSASA"><meta name="copyright" content="ZhouYingSASA"><title>官方 Windows Preinstallation Environment (WinPE) 安装 | 咒影的个人博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.2.0'
+} </script><meta name="generator" content="Hexo 5.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">ZhouYingSASA</div><div class="author-info__description text-center">后端讨饭仔</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">4</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">5</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">咒影的个人博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right"></span></div><div id="post-info"><div id="post-title">官方 Windows Preinstallation Environment (WinPE) 安装</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-05-12</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>需要安装<em>Deployment Tools</em>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://download.microsoft.com/download/B/E/6/BE63E3A5-5D1C-43E7-9875-DFA2B301EC70/adk/adksetup.exe">adksetup</a><ul>
+<li>Deployment Tools</li>
+</ul>
+</li>
+</ul>
+<p>无图形界面<em>winpe</em>的安装软件：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://download.microsoft.com/download/D/7/E/D7E22261-D0B3-4ED6-8151-5E002C7F823D/adkwinpeaddons/adkwinpesetup.exe">adkwinpesetup</a></li>
+</ul>
+<a id="more"></a>
+
+<p>&nbsp;</p>
+<p>（文中x为安装win的版本，如10）<br>（文中..\为安装目录）</p>
+<p><strong><em>Windows ADK needs extra environment settings.</em></strong><br><strong>ADK安装对环境变量有额外需求，下文描述对其中几个命令的更改。</strong><br>######<del>它看起来就像一个未完成品</del></p>
+<hr>
+<p>WinPE的copype文件对环境变量有所依赖，所以需要更改环境变量配置。</p>
+<blockquote>
+<p><code>ERROR: The following processor architecture was not found: amd64.</code><br><code>Failed!</code></p>
+</blockquote>
+<p>进入<code>..\Windows Kits\x\Assessment and Deployment Kit\Windows Preinstallation Environment</code><br>修改<code>copype.cmd</code>文件</p>
+<p>添加以下环境变量</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> WinPERoot=..\Windows Kits\<span class="number">10</span>\Assessment and Deployment Kit\Windows Preinstallation Environment</span><br><span class="line"><span class="built_in">set</span> OSCDImgRoot=..\Windows Kits\<span class="number">10</span>\Assessment and Deployment Kit\Deployment Tools</span><br></pre></td></tr></table></figure>
+
+
+<p>即可执行<code>copype &#123; amd64 | x86 | arm | arm64 &#125; &lt;workingDirectory&gt;</code></p>
+<hr>
+<p>但是你发现MakeWinPEMedia还是不能执行:</p>
+<blockquote>
+<p><code>&#39;oscdimg&#39; 不是内部或外部命令，也不是可运行的程序或批处理文件。</code><br><code>ERROR: Failed to create &quot;..&quot; file.</code></p>
+</blockquote>
+<p>原因还是缺少了oscdimg的路径变量，这里我直接把oscdimg设定成一个常量，<br>值为它所在的位置了。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> oscdimg=&quot;..\Windows Kits\x\Assessment and Deployment Kit\Deployment Tools\x86\Oscdimg\oscdimg.exe&quot;</span><br></pre></td></tr></table></figure>
+
+<p>而后执行<code>MakeWinPEMedia &#123;/ufd | /iso&#125; [/f] &lt;workingDirectory&gt; &lt;destination&gt;</code><br>即可生成相应刻录文件。</p>
+<hr>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZhouYingSASA</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://zhouyingsasa.xyz/2019/05/12/WinPE install/">http://zhouyingsasa.xyz/2019/05/12/WinPE install/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7%E6%96%87/">工具文</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/10/19/%E4%BD%BF%E7%94%A8acme-sh%E8%87%AA%E5%8A%A8%E7%AD%BE%E5%8F%91%E8%AF%81%E4%B9%A6/"><i class="fa fa-chevron-left">  </i><span>【泛域名】使用Let's Encrypt免费签发个人或企业网站泛域名证书</span></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By ZhouYingSASA</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
