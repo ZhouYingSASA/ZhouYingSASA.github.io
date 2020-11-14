@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="布隆过滤器"><meta name="keywords" content="转载,数据结构,Redis,算法"><meta name="author" content="ZhouYingSASA"><meta name="copyright" content="ZhouYingSASA"><title>布隆过滤器 | 咒影的个人博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.2.0'
+} </script><meta name="generator" content="Hexo 5.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">布隆过滤器简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">二、布隆过滤器应用</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="img/avatar.jpg"></div><div class="author-info__name text-center">ZhouYingSASA</div><div class="author-info__description text-center">后端讨饭仔</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">5</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">6</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">友链</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lenconda.top">Lenconda 的技术博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lxxyx.cn">繁易の前端乐园</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.exql.net">Exqlnet 的网络博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.vadxq.com">清竹茶馆</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.jinof.now.sh">Jinof 的博客</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">咒影的个人博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right"></span></div><div id="post-info"><div id="post-title">布隆过滤器</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-11-14</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><blockquote>
+<p> 作者: semlinker<br> <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021136424">https://segmentfault.com/a/1190000021136424</a></p>
+</blockquote>
+<p>&emsp;&emsp;布隆过滤器是可以解决一个值”可能在集合中”或者”绝对不在集合中”。它可以解决项目中一些比较棘手的问题。比如大量网页URL的去重、垃圾邮件识别、大集合中的重复元素判断和Redis的缓存穿透问题。</p>
+<p>&emsp;&emsp;布隆过滤器（Bloom Filter）是 1970 年由布隆提出的。它实际上是一个很长的二进制向量和一系列随机映射函数。布隆过滤器可以用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都比一般的算法要好的多，缺点是有一定的误识别率和删除困难。</p>
+<a id="more"></a>
+
+<h2 id="布隆过滤器简介"><a href="#布隆过滤器简介" class="headerlink" title="布隆过滤器简介"></a>布隆过滤器简介</h2><p>&emsp;&emsp;当你往简单数组或列表中插入新数据时，将不会根据插入项的值来确定该插入项的索引值。这意味着新插入项的索引值与数据值之间没有直接关系。这样的话，当你需要在数组或列表中搜索相应值的时候，你必须遍历已有的集合。若集合中存在大量的数据，就会影响数据查找的效率。</p>
+<p>&emsp;&emsp;针对这个问题，你可以考虑使用哈希表。利用哈希表你可以通过对 “值” 进行哈希处理来获得该值对应的键或索引值，然后把该值存放到列表中对应的索引位置。这意味着索引值是由插入项的值所确定的，当你需要判断列表中是否存在该值时，只需要对值进行哈希处理并在相应的索引位置进行搜索即可，这时的搜索速度是非常快的。</p>
+<p>&emsp;&emsp;根据定义，布隆过滤器可以检查值是 “可能在集合中” 还是 “绝对不在集合中”。”可能” 表示有一定的概率，也就是说可能存在一定为误判率。那为什么会存在误判呢？下面我们来分析一下具体的原因。</p>
+<p>布隆过滤器（Bloom Filter）本质上是由长度为 m 的位向量或位列表（仅包含 0 或 1 位值的列表）组成，最初所有的值均设置为 0，如下图所示。</p>
+<table>
+<thead>
+<tr>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+</tr>
+</thead>
+</table>
+<p>&emsp;&emsp;为了将数据项添加到布隆过滤器中，我们会提供 K 个不同的哈希函数，并将结果位置上对应位的值置为 “1”。在前面所提到的哈希表中，我们使用的是单个哈希函数，因此只能输出单个索引值。而对于布隆过滤器来说，我们将使用多个哈希函数，这将会产生多个索引值。</p>
+<table>
+<thead>
+<tr>
+<th align="center">0 <td bgcolor=aqua><center><strong>1</strong></center></td></th>
+<th align="center">0 <td bgcolor=aqua><center><strong>1</strong></center></td></th>
+<th align="center">0 <td bgcolor=aqua><center><strong>1</strong></center></td></th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+</tr>
+</thead>
+</table>
+<p>&emsp;&emsp;如上所示，当输入 “semlinker” 时，预设的 3 个哈希函数将输出 2、4、6，我们把相应位置 1。假设另一个输入 “kakuqo”，哈希函数输出 3、4 和 7。你可能已经注意到，索引位 4 已经被先前的 “semlinker” 标记了。此时，我们已经使用 “semlinker” 和 “kakuqo” 两个输入值，填充了位向量。当前位向量的标记状态为：</p>
+<table>
+<thead>
+<tr>
+<th align="center">0</th>
+<th align="center">1 <td bgcolor=aqua><center><strong>1</strong></center></td> <td bgcolor=aqua><center><strong>1</strong></center></td></th>
+<th align="center">0</th>
+<th align="center">1 <td bgcolor=aqua><center><strong>1</strong></center></td></th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+</tr>
+</thead>
+</table>
+<p>&emsp;&emsp;当对值进行搜索时，与哈希表类似，我们将使用 3 个哈希函数对 “搜索的值” 进行哈希运算，并查看其生成的索引值。假设，当我们搜索 “fullstack” 时，3 个哈希函数输出的 3 个索引值分别是 2、3 和 7：</p>
+<table>
+<thead>
+<tr>
+<th align="center">0 <td bgcolor=orange><center><strong>1</strong></center></td> <td bgcolor=orange><center><strong>1</strong></center></td></th>
+<th align="center">1</th>
+<th align="center">0</th>
+<th align="center">1 <td bgcolor=orange><center><strong>1</strong></center></td></th>
+<th align="center">0</th>
+<th align="center">0</th>
+<th align="center">0</th>
+</tr>
+</thead>
+</table>
+<p>&emsp;&emsp;从上可以看出，相应的索引位都被置为 1，这意味着我们可以说 “fullstack” 可能已经插入到集合中。事实上这是误报的情形，产生的原因是由于哈希碰撞导致的巧合而将不同的元素存储在相同的比特位上。幸运的是，布隆过滤器有一个可预测的误判率（FPP）：</p>
+<p><img src="/img/16eba609871807ab"></p>
+<ul>
+<li>n - 已经添加元素的数量</li>
+<li>k - 哈希的次数</li>
+<li>m - 布隆过滤器的长度</li>
+</ul>
+<p>&emsp;&emsp;极端情况下，当布隆过滤器没有空闲空间时（满），每一次查询都会返回 true 。这也就意味着 m 的选择取决于期望预计添加元素的数量 n ，并且 m 需要远远大于 n 。</p>
+<p>&emsp;&emsp;实际情况中，布隆过滤器的长度 m 可以根据给定的误判率（FFP）的和期望添加的元素个数 n 的通过如下公式计算：</p>
+<p><img src="/img/16eba609a9158723"></p>
+<p>&emsp;&emsp;了解完上述的内容之后，我们可以得出一个结论，<strong>当我们搜索一个值的时候，若该值经过 K 个哈希函数运算后的任何一个索引位为 “0”，那么该值肯定不在集合中。但如果所有哈希索引值均为 “1”，则只能说该搜索的值可能存在集合中。</strong></p>
+<h2 id="二、布隆过滤器应用"><a href="#二、布隆过滤器应用" class="headerlink" title="二、布隆过滤器应用"></a>二、布隆过滤器应用</h2><p>在实际工作中，布隆过滤器常见的应用场景如下：</p>
+<ul>
+<li>爬虫对 URL 去重：避免爬取相同的 URL 地址；</li>
+<li>反垃圾邮件：从数十亿垃圾邮件列表中判断某邮箱是否是垃圾邮箱；</li>
+<li>Google Chrome 使用布隆过滤器识别恶意 URL；</li>
+<li>Medium 使用布隆过滤器避免推荐用户已经读过的文章。</li>
+<li>Google BigTable, Apache HBbase 和 Apache Cassandra 使用布隆过滤器减少对不存在的行和列的查找。</li>
+</ul>
+<p>&emsp;&emsp;除了上述的应用场景之外，布隆过滤器还有一个应用场景就是解决缓存穿透的问题。所谓的缓存穿透就是服务调用方每次都是查询不在缓存中的数据，这样每次服务调用都会到数据库中进行查询，如果这类请求比较多的话，就会导致数据库压力增大，这样缓存就失去了意义。</p>
+<p>&emsp;&emsp;利用布隆过滤器我们可以预先把数据查询的主键，比如用户 ID 或文章 ID 缓存到过滤器中。当根据 ID 进行数据查询的时候，我们先判断该 ID 是否存在，若存在的话，则进行下一步处理。若不存在的话，直接返回，这样就不会触发后续的数据库查询。需要注意的是缓存穿透不能完全解决，我们只能将其控制在一个可以容忍的范围内。</p>
+<blockquote>
+<p>作者：架构文摘<br>链接：<a target="_blank" rel="noopener" href="https://juejin.im/post/6844904007790673933">https://juejin.im/post/6844904007790673933</a></p>
+</blockquote>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZhouYingSASA</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://zhouyingsasa.xyz/2020/11/14/Bloom-Filter/">http://zhouyingsasa.xyz/2020/11/14/Bloom-Filter/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/11/11/%E5%85%B3%E4%BA%8ERedis%E7%9A%84%E8%B7%B3%E8%A1%A8/"><span>关于Redis的跳表</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By ZhouYingSASA</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
