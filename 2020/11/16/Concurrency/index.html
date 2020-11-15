@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="并发编程"><meta name="keywords" content="原创,Golang,并发"><meta name="author" content="ZhouYingSASA"><meta name="copyright" content="ZhouYingSASA"><title>并发编程 | 咒影的个人博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.2.0'
+} </script><meta name="generator" content="Hexo 5.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B"><span class="toc-text">进程、线程、协程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B"><span class="toc-text">进程和线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B-Process-%E8%B5%84%E6%BA%90%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%83%E3%80%82"><span class="toc-text">进程(Process): 资源的所有权。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B-Thread-%E6%89%A7%E8%A1%8C%E5%92%8C%E8%B0%83%E5%BA%A6%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8D%95%E4%BD%8D"><span class="toc-text">线程(Thread): 执行和调度的基本单位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B"><span class="toc-text">进程 + 线程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B-Coroutine"><span class="toc-text">协程(Coroutine)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#drafts"><span class="toc-text">drafts</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="img/avatar.jpg"></div><div class="author-info__name text-center">ZhouYingSASA</div><div class="author-info__description text-center">Do what you love, Love what you do</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/ZhouYingSASA">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">6</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">9</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">友链</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lenconda.top">Lenconda 的技术博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lxxyx.cn">繁易の前端乐园</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.exql.net">Exqlnet 的网络博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.vadxq.com">清竹茶馆</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.jinof.now.sh">Jinof 的博客</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">咒影的个人博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">并发编程</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-11-16</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>“””不要用共享内存的方法来通信，而是应该用通信的方法来共享内存。”””</p>
+<p><em>这个议题太大了，现在仍在写作中…</em></p>
+<a id="more"></a>
+
+<h1 id="进程、线程、协程"><a href="#进程、线程、协程" class="headerlink" title="进程、线程、协程"></a>进程、线程、协程</h1><p>&emsp;&emsp;当运行一个应用程序的时候，操作系统就会给这个应用程序启动一个进程。我们可以将进程看作一个包含应用程序在运行中需要用到的和维护的各种资源的<strong>容器</strong>。而一个进程至少包含一个线程，这个线程就是主线程。操作系统会调度线程到不同的 CPU 上执行，这个 CPU 不一定就是进程所在的 CPU。</p>
+<h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><h3 id="进程-Process-资源的所有权。"><a href="#进程-Process-资源的所有权。" class="headerlink" title="进程(Process): 资源的所有权。"></a>进程(<em>Process</em>): 资源的所有权。</h3><p>进程是一个具有一定独立功能的程序在一个数据集上的一次动态执行的过程，是操作系统进行资源分配和调度的一个基本单位，是应用程序运行的载体、是操作系统结构的基础。直白地讲，进程就是应用程序的启动实例。比如我们运行一个游戏，打开一个软件，就是开启了一个进程，进程拥有代码和打开的文件资源、数据资源、独立的内存空间。  </p>
+<p>进程具有的特征: </p>
+<ul>
+<li>动态性：进程是程序的一次执行过程，是临时的，有生命期的，是动态产生，动态消亡的；</li>
+<li>并发性：任何进程都可以同其他进行一起并发执行；</li>
+<li>独立性：进程是系统进行资源分配和调度的一个独立单位；</li>
+<li>结构性：进程由程序，数据和进程控制块三部分组成</li>
+</ul>
+<h3 id="线程-Thread-执行和调度的基本单位"><a href="#线程-Thread-执行和调度的基本单位" class="headerlink" title="线程(Thread): 执行和调度的基本单位"></a>线程(<em>Thread</em>): 执行和调度的基本单位</h3><p>线程从属于进程，是程序的实际执行者。一个进程至少包含一个主线程，也可以有更多的子线程，线程拥有自己的栈空间。线程具有五种状态: </p>
+<p><img src="/img/16cb70ba065076e9"></p>
+<p><strong>对操作系统来说，线程是最小的执行单元，进程是最小的资源管理单元。</strong>无论是进程还是线程，都是由操作系统来管理调度的。同一进程下的各线程共享资源，但不共享寄存器、栈、PC。</p>
+<h3 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程 + 线程"></a>进程 + 线程</h3><p>也许有人看懵了，就会有这样一个问题：线程是不是就是“进程的进程”呢？我们不如从以下几点看看。</p>
+<p><strong>进程和线程的区别:</strong></p>
+<ul>
+<li>线程是程序执行的最小单位，进程是操作系统分配资源的最小单位。</li>
+<li>线程间互相独立，但同一进程下的线程共享进程的内存空间(代码段、数据集、堆等)以及一些进程级的资源(虚拟地址空间，文件描述符和信号处理等)。 线程在跨进程间互相不可见</li>
+<li>同一进程中的多个线程有各自的调用栈（call stack），自己的寄存器环境（register context），自己的线程本地存储（thread-local storage）</li>
+</ul>
+<p><strong>线程间的协作和进程间的协作都有以下特点:</strong> </p>
+<ul>
+<li>都有各自可以共享的资源和不可共享的资源</li>
+<li>都要进行上下文切换</li>
+<li>在操作系统中都是通过<strong>抢占式时间片轮转</strong>方式工作，并且通过<strong>锁机制</strong>来协调冲突</li>
+</ul>
+<p>*这个锁机制真是让人又爱又恨，它解决了信息不互通的 Workers 不礼貌地抢占空间和资源而带来的问题，却又带来了一个新的问题：<strong>死锁</strong>。抢占式时间片轮转同样拥有自己需要解决的问题，但关于这几点以后再聊。</p>
+<p><strong>那么线程之间是如何进行协作的呢？</strong></p>
+<p>最典型的例子就是“生产者/消费者”模式：</p>
+<ul>
+<li>若干个生产者向队列中写入数据</li>
+<li>若干个消费者从队列中消费数据</li>
+<li>通过锁机制控制队列和等待</li>
+</ul>
+<h2 id="协程-Coroutine"><a href="#协程-Coroutine" class="headerlink" title="协程(Coroutine)"></a>协程(<em>Coroutine</em>)</h2><p>协程的最大特点就是谦让性。</p>
+<h1 id="drafts"><a href="#drafts" class="headerlink" title="drafts"></a><em>drafts</em></h1><p>task queue</p>
+<ul>
+<li>goroutine-safe</li>
+<li>store and pass values between goroutines</li>
+<li>provide FIFO semantics</li>
+<li>can cause goroutines to block and unblock</li>
+</ul>
+<p>Goroutines: to execute tasks independently, potentially in parallel<br>channels: for communication, synchronization between goroutines</p>
+<p>to use it, first we need to build it. we do that using the built-in make function</p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="comment">// buffered channel</span></span><br><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> Task, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZhouYingSASA</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://zhouyingsasa.xyz/2020/11/16/Concurrency/">http://zhouyingsasa.xyz/2020/11/16/Concurrency/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8E%9F%E5%88%9B/">原创</a><a class="post-meta__tags" href="/tags/Golang/">Golang</a><a class="post-meta__tags" href="/tags/%E5%B9%B6%E5%8F%91/">并发</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/11/14/Bloom-Filter/"><span>布隆过滤器</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2020 By ZhouYingSASA</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
