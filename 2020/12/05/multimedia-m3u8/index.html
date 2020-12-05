@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="HLS 协议与 M3U8"><meta name="keywords" content="转载"><meta name="author" content="ZhouYingSASA"><meta name="copyright" content="ZhouYingSASA"><title>HLS 协议与 M3U8 | 咒影的个人博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.2.0'
+} </script><meta name="generator" content="Hexo 5.2.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text"> 协议简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#m3u"><span class="toc-number">2.</span> <span class="toc-text"> M3U</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%92%AD%E6%94%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text"> 播放模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ref"><span class="toc-number">4.</span> <span class="toc-text"> Ref</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.jpg"></div><div class="author-info__name text-center">ZhouYingSASA</div><div class="author-info__description text-center">Do what you love, Love what you do</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/ZhouYingSASA">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">11</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">13</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">友链</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lenconda.top">Lenconda 的技术博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lxxyx.cn">繁易の前端乐园</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.exql.net">Exqlnet 的网络博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.vadxq.com">清竹茶馆</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.jinof.now.sh">Jinof 的博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://home.guoxy.top/">Guoxy's Home</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">咒影的个人博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">HLS 协议与 M3U8</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-12-05</time><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">2.1k</span><span class="post-meta__separator">|</span><span>Reading time: 6 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><blockquote>
+<p>HTTP Live Streaming（缩写是HLS）是一个由苹果公司提出的基于HTTP的流媒体网络传输协议。是苹果公司QuickTime X和iPhone软件系统的一部分。它的工作原理是把整个流分成一个个小的基于HTTP的文件来下载，每次只下载一些。当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。在开始一个流媒体会话时，客户端会下载一个包含元数据的extended M3U (m3u8)playlist文件，用于寻找可用的媒体流。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="协议简介"><a class="markdownIt-Anchor" href="#协议简介"></a> 协议简介</h2>
+<p>HLS协议规定:</p>
+<ul>
+<li>视频的封装格式是TS。</li>
+<li>视频的编码格式为H264,音频编码格式为MP3、AAC或者AC-3。</li>
+<li>除了TS视频文件本身，还定义了用来控制播放的m3u8文件（文本文件）。</li>
+</ul>
+<p>为什么苹果要提出HLS这个协议，其实他的主要是为了解决RTMP协议存在的一些问题。比如RTMP协议不使用标准的HTTP接口传输数据，所以在一些特殊的网络环境下可能被防火墙屏蔽掉。但是HLS由于使用的HTTP协议传输数据，不会遇到被防火墙屏蔽的情况（该不会有防火墙连80接口都不放过吧）。</p>
+<p>另外于负载，RTMP是一种有状态协议，很难对视频服务器进行平滑扩展，因为需要为每一个播放视频流的客户端维护状态。而HLS基于无状态协议（HTTP），客户端只是按照顺序使用下载存储在服务器的普通TS文件，做负责均衡如同普通的HTTP文件服务器的负载均衡一样简单。</p>
+<p>另外HLS协议本身实现了码率自适应，不同带宽的设备可以自动切换到最适合自己码率的视频播放。其实HLS最大的优势就是他的亲爹是苹果。苹果在自家的IOS设备上只提供对HLS的原生支持，并且放弃了flash。Android也迫于平果的“淫威”原生支持了HLS。这样一来flv，rtmp这些Adobe的视频方案要想在移动设备上播放需要额外下点功夫。当然flash对移动设备造成很大的性能压力确实也是自身的问题。</p>
+<p>但HLS也有一些无法跨越的坑，比如采用HLS协议直播的视频延迟时间无法下到10秒以下，而RTMP协议的延迟最低可以到3、4秒左右。<strong>所以说对直播延迟比较敏感的服务请慎用HLS。</strong></p>
+<h2 id="m3u"><a class="markdownIt-Anchor" href="#m3u"></a> M3U</h2>
+<p>维基百科中的 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/M3U">M3U</a> 词条里的描述是这样的：</p>
+<blockquote>
+<p>M3U文件是一种纯文本文件，可以指定一个或多个多媒体文件的位置，其文件扩展名是“M3U”或者“m3u”。</p>
+<p>M3U文件具有多个条目，每个条目的格式可以是以下几种格式之一：</p>
+<p>一个绝对路径；比如：C:\My Music\Heavysets.mp3<br />
+一个相对路径（相对于M3U文件的路径）；比如：Heavysets.mp3<br />
+一个URL<br />
+M3U文件也有注释，注释行以&quot;#“字符开头，在扩展M3U文件中，”#&quot;还引入了扩展M3U指令。</p>
+<p>M3U文件的作用通常是创建指向在线流媒体的播放列表，创建的文件可以轻松访问流媒体。M3U文件通常作为网站的下载资源、通过email收发，并可以收听网络电台。</p>
+<p>如果使用编辑器编辑M3U文件，必须将该文件用Windows-1252格式保存，这种格式是ASCII编码的超集。M3U文件也可以使用Latin-1字符编码。</p>
+<p><strong>M3U8</strong><br />
+M3U8是Unicode版本的M3U，用UTF-8编码。&quot;M3U&quot;和&quot;M3U8&quot;文件都是苹果公司使用的HTTP Live Streaming格式的基础，这种格式可以在iPhone和Macbook等设备播放。</p>
+</blockquote>
+<p>下面来看看一个CCTV6直播的播放地址<a target="_blank" rel="noopener" href="http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8">http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8</a>:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXT-X-MEDIA-SEQUENCE:87999</span><br><span class="line">#EXT-X-TARGETDURATION:10</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153009000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153019000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153029000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153039000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153049000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153059000.ts</span><br></pre></td></tr></table></figure>
+<p>由此可以看出M3U8的几个字段</p>
+<ul>
+<li>EXTM3U：这个是M3U8文件必须包含的标签，并且必须在文件的第一行，所有的M3U8文件中必须包含这个标签。</li>
+<li>EXT-X-VERSION：M3U8文件的版本，常见的是3（目前最高版本应该是7）。</li>
+<li>EXT-X-TARGETDURATION：该标签指定了媒体文件持续时间的最大值，播放文件列表中的媒体文件在EXTINF标签中定义的持续时间必须小于或者等于该标签指定的持续时间。该标签在播放列表文件中必须出现一次。</li>
+<li>EXT-X-MEDIA-SEQUENCE：M3U8直播是的直播切换序列，当播放打开M3U8时，以这个标签的值作为参考，播放对应的序列号的切片。</li>
+<li>EXTINF：EXTINF为M3U8列表中每一个分片的duration，如上面例子输出信息中的第一片的duration为10秒。在EXTINF标签中，除了duration值，还可以包含可选的描述信息，主要为标注切片信息，使用逗号分隔开。</li>
+</ul>
+<p>在上面，我们提到了，一些上面例子没有出现的一些标签字段，下面我们针对一些额外的标签做一些补充说明：</p>
+<ul>
+<li>EXT-X-ENDLIST：若出现EXT-X-ENDLIST标签，则表明M3U8文件不会再产生更多的切片，可以理解为该M3U8已停止更新，并且播放分片到这个标签后结束。M3U8不仅仅是可以作为直播，也可以作为点播存在，在M3U8文件中保存所有切片信息最后使用EXT-X-ENDLIST结尾，这个M3U8即为点播M3U8。EXT-X-ENDLIST标签可能会出现在播放列表文件的任何地方，但是不能出现两次或以上。</li>
+<li>EXT-X-STREAM-INF：EXT-X-STREAM-INF标签出现在M3U8时，主要是出现在多级M3U8文件中时，例如M3U8中包含子M3U8列表，或者主M3U8中包含多码率M3U8时；该标签后需要跟一些属性，下面就来逐一说明一下这些属性：</li>
+<li>BANDWIDTH：BANDWIDTH的值为最高码率值，当播放EXT-X-STREAM-INF下对应的M3U8时占用的最大码率（必要参数）。</li>
+<li>AVERAGE-BANDWIDTH：AVERAGE-BANDWIDTH的值为平均码率值，当播放EXT-X-STREAM-INF下对应的M3U8时占用的平均码率。（可选参数）。</li>
+<li>CODECS：CODECS的值用于声明EXT-X-STREAM-INF下面对应M3U8里面的音视频编码、视频编码的信息（可选参数）。</li>
+<li>RESOLUTION：M3U8中视频的宽高信息描述（可选参数）。</li>
+<li>FRAME-RATE：子M3U8中的视频帧率（可选参数）。</li>
+</ul>
+<h2 id="播放模式"><a class="markdownIt-Anchor" href="#播放模式"></a> 播放模式</h2>
+<ul>
+<li>
+<p>点播VOD的特点就是当前时间点可以获取到所有index文件和ts文件，二级index文件中记录了所有ts文件的地址。这种模式允许客户端访问全部内容。上面的例子中就是一个点播模式下的m3u8的结构。</p>
+</li>
+<li>
+<p>Live 模式就是实时生成M3u8和ts文件。它的索引文件一直处于动态变化的，播放的时候需要不断下载二级index文件，以获得最新生成的ts文件播放视频。如果一个二级index文件的末尾没有#EXT-X-ENDLIST标志，说明它是一个Live视频流。</p>
+</li>
+</ul>
+<p>客户端在播放VOD模式的视频时其实只需要下载一次一级index文件和二级index文件就可以得到所有ts文件的下载地址，除非客户端进行比特率切换，否则无需再下载任何index文件，只需顺序下载ts文件并播放就可以了。但是Live模式下略有不同，因为播放的同时，新ts文件也在被生成中，所以客户端实际上是下载一次二级index文件，然后下载ts文件，再下载二级index文件（这个时候这个二级index文件已经被重写，记录了新生成的ts文件的下载地址）,再下载新ts文件，如此反复进行播放。</p>
+<p>就先写到这，剩下的细节可以查看文章 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2ce402a485ca">《HTTP Live Streaming (HLS) - 概念》</a></p>
+<h2 id="ref"><a class="markdownIt-Anchor" href="#ref"></a> Ref</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/M3U">M3U - 维基百科，自由的百科全书</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/renhui/p/10351870.html">多媒体格式（三）：M3U8格式 - 灰色飘零 - 博客园</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/426425cad08a">HLS协议介绍 - 简书</a></li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZhouYingSASA</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://zhouyingsasa.xyz/2020/12/05/multimedia-m3u8/">http://zhouyingsasa.xyz/2020/12/05/multimedia-m3u8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/11/24/as-i-began-to-love-myself/"><span>As I began to love myself - Charlie Chaplin</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2020 By ZhouYingSASA</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script src="/js/katex.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
