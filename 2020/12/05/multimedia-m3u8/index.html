@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="HLS 协议与 M3U8"><meta name="keywords" content="转载"><meta name="author" content="ZhouYingSASA"><meta name="copyright" content="ZhouYingSASA"><title>HLS 协议与 M3U8 | 咒影的个人博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="HLS 协议与 M3U8、 TS"><meta name="keywords" content="转载,数据结构,协议"><meta name="author" content="ZhouYingSASA"><meta name="copyright" content="ZhouYingSASA"><title>HLS 协议与 M3U8、 TS | 咒影的个人博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
   root: '/',
   algolia: undefined,
   localSearch: undefined,
@@ -8,22 +8,22 @@
     noSupport: 'The browser does not support'
   },
   hexoVersion: '5.2.0'
-} </script><meta name="generator" content="Hexo 5.2.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text"> 协议简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#m3u"><span class="toc-number">2.</span> <span class="toc-text"> M3U</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%92%AD%E6%94%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text"> 播放模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ref"><span class="toc-number">4.</span> <span class="toc-text"> Ref</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.jpg"></div><div class="author-info__name text-center">ZhouYingSASA</div><div class="author-info__description text-center">Do what you love, Love what you do</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/ZhouYingSASA">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">11</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">13</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">友链</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lenconda.top">Lenconda 的技术博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lxxyx.cn">繁易の前端乐园</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.exql.net">Exqlnet 的网络博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.vadxq.com">清竹茶馆</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.jinof.now.sh">Jinof 的博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://home.guoxy.top/">Guoxy's Home</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">咒影的个人博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">HLS 协议与 M3U8</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-12-05</time><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">2.1k</span><span class="post-meta__separator">|</span><span>Reading time: 6 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><blockquote>
+} </script><meta name="generator" content="Hexo 5.2.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text"> 协议简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#m3u"><span class="toc-number">2.</span> <span class="toc-text"> M3U</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%AD%97%E6%AE%B5"><span class="toc-number">2.1.</span> <span class="toc-text"> 格式字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%92%AD%E6%94%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text"> 播放模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ts"><span class="toc-number">3.</span> <span class="toc-text"> TS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E7%AE%80%E4%BB%8B"><span class="toc-number">3.1.</span> <span class="toc-text"> 格式简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ts-%E5%B1%82"><span class="toc-number">3.2.</span> <span class="toc-text"> TS 层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ts-header"><span class="toc-number">3.2.1.</span> <span class="toc-text"> 1. TS Header</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ts-adaptation-field"><span class="toc-number">3.2.2.</span> <span class="toc-text"> TS Adaptation Field</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ts-payload"><span class="toc-number">3.2.3.</span> <span class="toc-text"> TS Payload</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pes-%E5%B1%82-es-%E5%B1%82"><span class="toc-number">3.3.</span> <span class="toc-text"> PES 层 &amp; ES 层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pes"><span class="toc-number">3.3.1.</span> <span class="toc-text"> PES</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#es-%E5%B1%82"><span class="toc-number">3.3.2.</span> <span class="toc-text"> ES 层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ts-%E6%B5%81%E7%94%9F%E6%88%90%E5%8F%8A%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text"> TS 流生成及解析流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ts-%E6%B5%81%E7%94%9F%E6%88%90%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.1.</span> <span class="toc-text"> TS 流生成流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ts-%E6%B5%81%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.2.</span> <span class="toc-text"> TS 流解析流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref"><span class="toc-number">4.</span> <span class="toc-text"> Ref</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.jpg"></div><div class="author-info__name text-center">ZhouYingSASA</div><div class="author-info__description text-center">Do what you love, Love what you do</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/ZhouYingSASA">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">11</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">13</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">友链</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lenconda.top">Lenconda 的技术博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.lxxyx.cn">繁易の前端乐园</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.exql.net">Exqlnet 的网络博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.vadxq.com">清竹茶馆</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://blog.jinof.now.sh">Jinof 的博客</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://home.guoxy.top/">Guoxy's Home</a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">咒影的个人博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">HLS 协议与 M3U8、 TS</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-12-05</time><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">4k</span><span class="post-meta__separator">|</span><span>Reading time: 13 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><blockquote>
 <p>HTTP Live Streaming（缩写是HLS）是一个由苹果公司提出的基于HTTP的流媒体网络传输协议。是苹果公司QuickTime X和iPhone软件系统的一部分。它的工作原理是把整个流分成一个个小的基于HTTP的文件来下载，每次只下载一些。当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。在开始一个流媒体会话时，客户端会下载一个包含元数据的extended M3U (m3u8)playlist文件，用于寻找可用的媒体流。</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="协议简介"><a class="markdownIt-Anchor" href="#协议简介"></a> 协议简介</h2>
+<h1 id="协议简介"><a class="markdownIt-Anchor" href="#协议简介"></a> 协议简介</h1>
 <p>HLS协议规定:</p>
 <ul>
-<li>视频的封装格式是TS。</li>
-<li>视频的编码格式为H264,音频编码格式为MP3、AAC或者AC-3。</li>
-<li>除了TS视频文件本身，还定义了用来控制播放的m3u8文件（文本文件）。</li>
+<li>视频的封装格式是 TS。</li>
+<li>视频的编码格式为 H264, 音频编码格式为 MP3 、 AAC 或者 AC-3。</li>
+<li>除了 TS 视频文件本身，还定义了用来控制播放的m3u8文件（文本文件）。</li>
 </ul>
-<p>为什么苹果要提出HLS这个协议，其实他的主要是为了解决RTMP协议存在的一些问题。比如RTMP协议不使用标准的HTTP接口传输数据，所以在一些特殊的网络环境下可能被防火墙屏蔽掉。但是HLS由于使用的HTTP协议传输数据，不会遇到被防火墙屏蔽的情况（该不会有防火墙连80接口都不放过吧）。</p>
-<p>另外于负载，RTMP是一种有状态协议，很难对视频服务器进行平滑扩展，因为需要为每一个播放视频流的客户端维护状态。而HLS基于无状态协议（HTTP），客户端只是按照顺序使用下载存储在服务器的普通TS文件，做负责均衡如同普通的HTTP文件服务器的负载均衡一样简单。</p>
+<p>为什么苹果要提出HLS这个协议，其实他的主要是为了解决RTMP协议存在的一些问题。比如RTMP协议不使用标准的HTTP接口传输数据，所以在一些特殊的网络环境下可能被防火墙屏蔽掉。但是HLS由于使用的HTTP协议传输数据，不会遇到被防火墙屏蔽的情况。（该不会有防火墙连80接口都不放过吧）</p>
+<p>另外于负载，RTMP是一种有状态协议，很难对视频服务器进行平滑扩展，因为需要为每一个播放视频流的客户端维护状态。而HLS基于无状态协议(HTTP)，客户端只是按照顺序使用下载存储在服务器的普通TS文件，做负责均衡如同普通的HTTP文件服务器的负载均衡一样简单。</p>
 <p>另外HLS协议本身实现了码率自适应，不同带宽的设备可以自动切换到最适合自己码率的视频播放。其实HLS最大的优势就是他的亲爹是苹果。苹果在自家的IOS设备上只提供对HLS的原生支持，并且放弃了flash。Android也迫于平果的“淫威”原生支持了HLS。这样一来flv，rtmp这些Adobe的视频方案要想在移动设备上播放需要额外下点功夫。当然flash对移动设备造成很大的性能压力确实也是自身的问题。</p>
 <p>但HLS也有一些无法跨越的坑，比如采用HLS协议直播的视频延迟时间无法下到10秒以下，而RTMP协议的延迟最低可以到3、4秒左右。<strong>所以说对直播延迟比较敏感的服务请慎用HLS。</strong></p>
-<h2 id="m3u"><a class="markdownIt-Anchor" href="#m3u"></a> M3U</h2>
+<h1 id="m3u"><a class="markdownIt-Anchor" href="#m3u"></a> M3U</h1>
 <p>维基百科中的 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/M3U">M3U</a> 词条里的描述是这样的：</p>
 <blockquote>
 <p>M3U文件是一种纯文本文件，可以指定一个或多个多媒体文件的位置，其文件扩展名是“M3U”或者“m3u”。</p>
@@ -37,7 +37,8 @@ M3U文件也有注释，注释行以&quot;#“字符开头，在扩展M3U文件�
 <p><strong>M3U8</strong><br />
 M3U8是Unicode版本的M3U，用UTF-8编码。&quot;M3U&quot;和&quot;M3U8&quot;文件都是苹果公司使用的HTTP Live Streaming格式的基础，这种格式可以在iPhone和Macbook等设备播放。</p>
 </blockquote>
-<p>下面来看看一个CCTV6直播的播放地址<a target="_blank" rel="noopener" href="http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8">http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8</a>:</p>
+<h2 id="格式字段"><a class="markdownIt-Anchor" href="#格式字段"></a> 格式字段</h2>
+<p>下面来看看一个CCTV6直播的播放地址 <a target="_blank" rel="noopener" href="http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8">http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8</a></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXT-X-MEDIA-SEQUENCE:87999</span><br><span class="line">#EXT-X-TARGETDURATION:10</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153009000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153019000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153029000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153039000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153049000.ts</span><br><span class="line">#EXTINF:10.000,</span><br><span class="line">cctv6hd-1607153059000.ts</span><br></pre></td></tr></table></figure>
 <p>由此可以看出M3U8的几个字段</p>
 <ul>
@@ -68,13 +69,110 @@ M3U8是Unicode版本的M3U，用UTF-8编码。&quot;M3U&quot;和&quot;M3U8&quot;
 </ul>
 <p>客户端在播放VOD模式的视频时其实只需要下载一次一级index文件和二级index文件就可以得到所有ts文件的下载地址，除非客户端进行比特率切换，否则无需再下载任何index文件，只需顺序下载ts文件并播放就可以了。但是Live模式下略有不同，因为播放的同时，新ts文件也在被生成中，所以客户端实际上是下载一次二级index文件，然后下载ts文件，再下载二级index文件（这个时候这个二级index文件已经被重写，记录了新生成的ts文件的下载地址）,再下载新ts文件，如此反复进行播放。</p>
 <p>就先写到这，剩下的细节可以查看文章 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2ce402a485ca">《HTTP Live Streaming (HLS) - 概念》</a></p>
-<h2 id="ref"><a class="markdownIt-Anchor" href="#ref"></a> Ref</h2>
+<h1 id="ts"><a class="markdownIt-Anchor" href="#ts"></a> TS</h1>
+<p>TS是一种音视频封装格式，全称为MPEG2-TS。其中TS即&quot;Transport Stream&quot;的缩写。</p>
+<p>先简要介绍一下什么是MPEG2-TS：</p>
+<p>DVD的音视频格式为MPEG2-PS，全称是Program Stream。而TS的全称则是Transport Stream。MPEG2-PS主要应用于存储的具有固定时长的节目，如DVD电影，而MPEG-TS则主要应用于实时传送的节目，比如实时广播的电视节目。这两种格式的主要区别是什么呢？简单地打个比喻说，你将DVD上的VOB文件的前面一截cut掉（或者干脆就是数据损坏），那么就会导致整个文件无法解码了，而电视节目是你任何时候打开电视机都能解码（收看）的。</p>
+<p>所以，MPEG2-TS格式的特点就是要求从视频流的任一片段开始都是可以独立解码的。</p>
+<p>我们可以看出，TS格式是主要用于直播的码流结构，具有很好的容错能力。通常TS流的后缀是.ts、.mpg或者.mpeg，多数播放器直接支持这种格式的播放。TS流中不包含快速seek的机制，只能通过协议层实现seek。HLS协议基于TS流实现的。</p>
+<p>TS 格式的分析可以借助 <a target="_blank" rel="noopener" href="https://www.easyice.cn/archives/85">easyICE</a> 开源软件。</p>
+<h2 id="格式简介"><a class="markdownIt-Anchor" href="#格式简介"></a> 格式简介</h2>
+<p>TS文件 (流) 可以分为三层: TS (Transport Stream), PES (Packet Elemental Stream), ES (Elementary Stream)。</p>
+<p>ES层就是音视频数据，PES层是在音视频数据上加了时间戳等对数据帧的说明信息，TS层是在PES层上加入了数据流识别和传输的必要信息。TS文件（码流）由多个TS Packet组成的。</p>
+<p><img src="/img/682616-20190211204923332-1306467199.png" alt="https://github.com/renhui/Thinking-in-AV/blob/master/多媒体格式/TS/1.TS分层结构.jpg" /></p>
+<h2 id="ts-层"><a class="markdownIt-Anchor" href="#ts-层"></a> TS 层</h2>
+<p>TS包大小固定为188字节，TS层分为三个部分：TS Header、Adaptation Field、Payload。</p>
+<p>TS Header 固定 4 个字节； Adaptation Field 可能存在也可能不存在, 主要作用是给不足 188 字节的数据做填充； Payload是PES数据。</p>
+<h3 id="1-ts-header"><a class="markdownIt-Anchor" href="#1-ts-header"></a> 1. TS Header</h3>
+<p>TS包的包头提供关于传输方面的信息。</p>
+<p>TS包的包头长度不固定，前4个字节是固定的，后面可能跟有自适应字段（适配域）。4个字节是最小包头。</p>
+<p>包头的结构体字段如下：</p>
+<ul>
+<li>
+<p>sync_byte（同步字节）：固定为0x47;该字节由解码器识别，使包头和有效负载可相互分离。</p>
+</li>
+<li>
+<p>transport_error_indicator（传输错误标志）：‘1’表示在相关的传输包中至少有一个不可纠正的错误位。当被置1后，在错误被纠正之前不能重置为0。</p>
+</li>
+<li>
+<p>payload_unit_start_indicator（负载起始标志）：为1时，表示当前TS包的有效载荷中包含PES或者PSI的起始位置；在前4个字节之后会有一个调整字节，其的数值为后面调整字段的长度length。因此有效载荷开始的位置应再偏移1+[length]个字节。</p>
+</li>
+<li>
+<p>transport_priority（传输优先级标志）：‘1’表明当前TS包的优先级比其他具有相同PID， 但此位没有被置‘1’的TS包高。</p>
+</li>
+<li>
+<p>PID：指示存储与分组有效负载中数据的类型。</p>
+</li>
+<li>
+<p>transport_scrambling_control（加扰控制标志）：表示TS流分组有效负载的加密模式。空包为‘00’，如果传输包包头中包括调整字段，不应被加密。其他取值含义是用户自定义的。</p>
+</li>
+<li>
+<p>adaptation_field_control（适配域控制标志）：表示包头是否有调整字段或有效负载。‘00’为ISO/IEC未来使用保留；‘01’仅含有效载荷，无调整字段；‘10’ 无有效载荷，仅含调整字段；‘11’ 调整字段后为有效载荷，调整字段中的前一个字节表示调整字段的长度length，有效载荷开始的位置应再偏移[length]个字节。空包应为‘10’。</p>
+</li>
+<li>
+<p>continuity_counter（连续性计数器）：随着每一个具有相同PID的TS流分组而增加，当它达到最大值后又回复到0。范围为0~15。</p>
+</li>
+</ul>
+<h3 id="ts-adaptation-field"><a class="markdownIt-Anchor" href="#ts-adaptation-field"></a> TS Adaptation Field</h3>
+<p>Adaptation Field的长度要包含传输错误指示符标识的一个字节。</p>
+<p>PCR 是节目时钟参考，PCR、DTS、PTS 都是对同一个系统时钟的采样值， PCR 是递增的，因此可以将其设置为 DTS 值，音频数据不需要 PCR 。</p>
+<p>打包 TS 流时 PAT 和 PMT 表是没有 Adaptation Field 的，不够的长度直接补 0xff 即可。</p>
+<p>视频流和音频流都需要加 adaptation field，通常加在一个帧的第一个 ts 包和最后一个 ts 包里，中间的 ts 包不加。</p>
+<h3 id="ts-payload"><a class="markdownIt-Anchor" href="#ts-payload"></a> TS Payload</h3>
+<p>TS 包中 Payload 所传输的信息包括两种类型： 视频、音频的 PES 包以及辅助数据； 节目专用信息 PSI 。</p>
+<p>TS 包也可以是空包。空包用来填充 TS 流，可能在重新进行多路复用时被插入或删除。</p>
+<p>视频、音频的 ES 流需进行打包形成视频、音频的 PES 流。 辅助数据 （如图文电视信息） 不需要打成 PES 包。</p>
+<h2 id="pes-层-es-层"><a class="markdownIt-Anchor" href="#pes-层-es-层"></a> PES 层 &amp; ES 层</h2>
+<h3 id="pes"><a class="markdownIt-Anchor" href="#pes"></a> PES</h3>
+<p>PES 结构如图:</p>
+<p><img src="/img/682616-20190211214448146-501104692.png" alt="" /></p>
+<p>从上面的结构图可以看出，PES层是在每一个视频/音频帧上加入了时间戳等信息。 PES包内容很多，下面我们说明一下最常用的字段：</p>
+<ul>
+<li>pes start code：开始码，固定为0x000001。</li>
+<li>stream id：音频取值（0xc0-0xdf），通常为0xc0；视频取值（0xe0-0xef），通常为0xe0。</li>
+<li>pes packet length: 后面 pes 数据的长度， 0表示长度不限制， 只有视频数据长度会超过0xffff。</li>
+<li>pes data length：后面数据的长度，取值5或10。</li>
+<li>pts：33bit值</li>
+<li>dts：33bit值</li>
+</ul>
+<p>关于时间戳PTS和DTS的说明：</p>
+<ol>
+<li>PTS是显示时间戳、DTS是解码时间戳。</li>
+<li>视频数据两种时间戳都需要，音频数据的PTS和DTS相同，所以只需要PTS。</li>
+</ol>
+<p>有PTS和DTS两种时间戳是B帧引起的，I帧和P帧的PTS等于DTS。如果一个视频没有B帧，则PTS永远和DTS相同。</p>
+<p>从文件中顺序读取视频帧，取出的帧顺序和DTS顺序相同。DTS算法比较简单，初始值 + 增量即可，PTS计算比较复杂，需要在DTS的基础上加偏移量。</p>
+<p>音频的PES中只有PTS（同DTS），视频的I、P帧两种时间戳都要有，视频B帧只要PTS（同DTS）。</p>
+<h3 id="es-层"><a class="markdownIt-Anchor" href="#es-层"></a> ES 层</h3>
+<p>ES层指的就是音视频数据。</p>
+<p>一般的，视频为H.264视频，音频为AAC音频。</p>
+<h2 id="ts-流生成及解析流程"><a class="markdownIt-Anchor" href="#ts-流生成及解析流程"></a> TS 流生成及解析流程</h2>
+<h3 id="ts-流生成流程"><a class="markdownIt-Anchor" href="#ts-流生成流程"></a> TS 流生成流程</h3>
+<ul>
+<li>将原始音视频数据压缩之后，压缩结果组成一个基本码流（ES）。</li>
+<li>对ES（基本码流）进行打包形成PES。</li>
+<li>在PES包中加入时间戳信息(PTS/DTS)。</li>
+<li>将PES包内容分配到一系列固定长度的传输包（TS Packet）中。</li>
+<li>在传输包中加入定时信息(PCR)。</li>
+<li>在传输包中加入节目专用信息(PSI) 。</li>
+<li>连续输出传输包形成具有恒定比特率的MPEG-TS流。</li>
+</ul>
+<h3 id="ts-流解析流程"><a class="markdownIt-Anchor" href="#ts-流解析流程"></a> TS 流解析流程</h3>
+<ul>
+<li>复用的MPEG-TS流中解析出TS包；</li>
+<li>从TS包中获取PAT及对应的PMT；</li>
+<li>从而获取特定节目的音视频PID；</li>
+<li>通过PID筛选出特定音视频相关的TS包，并解析出PES；</li>
+<li>从PES中读取到PTS/DTS，并从PES中解析出基本码流ES；</li>
+<li>将ES交给解码器，获得压缩前的原始音视频数据。</li>
+</ul>
+<h1 id="ref"><a class="markdownIt-Anchor" href="#ref"></a> Ref</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/M3U">M3U - 维基百科，自由的百科全书</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/renhui/p/10351870.html">多媒体格式（三）：M3U8格式 - 灰色飘零 - 博客园</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/426425cad08a">HLS协议介绍 - 简书</a></li>
 </ul>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZhouYingSASA</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://zhouyingsasa.xyz/2020/12/05/multimedia-m3u8/">http://zhouyingsasa.xyz/2020/12/05/multimedia-m3u8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/11/24/as-i-began-to-love-myself/"><span>As I began to love myself - Charlie Chaplin</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2020 By ZhouYingSASA</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script src="/js/katex.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZhouYingSASA</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://zhouyingsasa.xyz/2020/12/05/multimedia-m3u8/">http://zhouyingsasa.xyz/2020/12/05/multimedia-m3u8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><a class="post-meta__tags" href="/tags/%E5%8D%8F%E8%AE%AE/">协议</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/11/24/as-i-began-to-love-myself/"><span>As I began to love myself - Charlie Chaplin</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2020 By ZhouYingSASA</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script src="/js/katex.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
   $('#nav').addClass('is-mobile')
   $('footer').addClass('is-mobile')
   $('#top-container').addClass('is-mobile')
